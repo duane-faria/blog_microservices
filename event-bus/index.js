@@ -5,6 +5,8 @@ const app = express();
 
 app.use(express.json());
 
+const events = [];
+
 app.post("/events", (req, res) => {
   const event = req.body;
 
@@ -13,7 +15,13 @@ app.post("/events", (req, res) => {
   axios.post("http://localhost:4002/events", event);
   axios.post("http://localhost:4003/events", event);
 
+  events.push(event);
+
   res.send({ status: "ok" });
+});
+
+app.get("/events", (req, res) => {
+  res.send(events);
 });
 
 app.listen(4005, () => {
